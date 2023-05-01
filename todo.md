@@ -10,6 +10,6 @@
 
 - [x] Test your bot locally before deploying it to a cloud hosting service.
 
-- [] Deploy your bot to the cloud and configure it to run continuously.
+- [ ] Deploy your bot to the cloud and configure it to run continuously.
 
-- [] Monitor your bot for any errors or issues.
+- [ ] Monitor your bot for any errors or issues.
