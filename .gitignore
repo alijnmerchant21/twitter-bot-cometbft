@@ -1,3 +1,5 @@
 # Files to ignore
 
 todo.txt
+config.py
+__pycache__
