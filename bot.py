@@ -1,7 +1,7 @@
-import random
 import tweepy
 import time
 import config
+import datetime
 
 # Twitter API credentials
 auth = tweepy.OAuthHandler(config.consumer_key, config.consumer_secret)
@@ -17,34 +17,28 @@ except Exception as e:
 
 # Define the search query
 search_query = "Tendermint"
+last_tweet_id = None
 
-# Define the reply message and a list of random quotes
-reply_message = "Tendermint has been replaced by CometBFT. "
-random_quotes = [
-    "The universe is a pretty big place. If it's just us, seems like an awful waste of space. - Carl Sagan",
-    "The only way to do great work is to love what you do. - Steve Jobs",
-    "The greatest glory in living lies not in never falling, but in rising every time we fall. - Nelson Mandela",
-    "Be the change that you wish to see in the world. - Mahatma Gandhi",
-    "I have not failed. I've just found 10,000 ways that won't work. - Thomas Edison"
-]
-
-# Define the function to search for and reply to tweets
-def search_and_reply():
+# Define the function to search for tweets
+def search_tweets():
+    global last_tweet_id
     # Search for recent tweets with the search query
-    tweets = api.search_tweets(q=search_query, count=1, result_type="recent")
+    if last_tweet_id is not None:
+        tweets = api.search_tweets(q=search_query, count=100, result_type="recent", max_id=last_tweet_id)
+    else:
+        tweets = api.search_tweets(q=search_query, count=100, result_type="recent")
     for tweet in tweets:
-        # Check if the tweet has already been replied to
-        if tweet.in_reply_to_status_id is not None:
-            continue
-        # Reply to the tweet
-        reply_text = reply_message + random_quotes[random.randint(0, len(random_quotes)-1)]
-        api.update_status(
-            status=reply_text,
-            in_reply_to_status_id=tweet.id,
-            auto_populate_reply_metadata=True
-        )
+        # Print the text of the tweet and the URL to the tweet
+        tweet_text = tweet.text
+        tweet_url = f"https://twitter.com/{tweet.user.screen_name}/status/{tweet.id}"
+        print(f"Found a tweet that mentions {search_query} at {datetime.datetime.now()}:")
+        print(tweet_text)
+        print(tweet_url)
+        if last_tweet_id is None or tweet.id < last_tweet_id:
+            last_tweet_id = tweet.id
 
-# Run the search and reply function every 30 minutes
+# Run the search function every 15 minutes
 while True:
-    search_and_reply()
-    time.sleep(100)
+    search_tweets()
+    time.sleep(900)
+    print("The bot is now on snooze")
