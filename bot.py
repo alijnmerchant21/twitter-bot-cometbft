@@ -23,7 +23,7 @@ search_query = "Tendermint"
 last_tweet_id = None
 
 # Define the Slack webhook URL and channel
-slack_webhook_url = "https://hooks.slack.com/services/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"
+slack_webhook_url = "https://hooks.slack.com/services/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"
 slack_channel = "#general"
 
 # Define the timezone to use for the current time
@@ -31,6 +31,7 @@ timezone = pytz.timezone('Europe/London')
 
 # Define the function to search for tweets and send a Slack message
 def search_tweets_and_send_slack_message():
+    print("The bot is now activated")
     global last_tweet_id
     # Search for recent tweets with the search query
     if last_tweet_id is not None:
