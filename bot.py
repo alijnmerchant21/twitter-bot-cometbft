@@ -1,33 +1,36 @@
 import tweepy
 import time
-import config
-import datetime
+import configparser
 import requests
 import json
 import pytz
+import datetime
+
+# Read the configuration file
+config = configparser.ConfigParser()
+config.read('config.ini')
 
 # Twitter API credentials
-auth = tweepy.OAuthHandler(config.consumer_key, config.consumer_secret)
-auth.set_access_token(config.access_token, config.access_token_secret)
-api = tweepy.API(auth)
+consumer_key = config['twitter']['consumer_key']
+consumer_secret = config['twitter']['consumer_secret']
+access_token = config['twitter']['access_token']
+access_token_secret = config['twitter']['access_token_secret']
 
-try:
-    api.verify_credentials()
-    print("Authentication OK")
-except Exception as e:
-    print("Error during authentication")
-    print(e)
+# Slack webhook URL and channel
+slack_webhook_url = config['slack']['webhook_url']
+slack_channel = config['slack']['channel']
 
 # Define the search query
 search_query = "Tendermint"
 last_tweet_id = None
 
-# Define the Slack webhook URL and channel
-slack_webhook_url = "https://hooks.slack.com/services/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"
-slack_channel = "#general"
-
 # Define the timezone to use for the current time
 timezone = pytz.timezone('Europe/London')
+
+# Authenticate with the Twitter API
+auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+auth.set_access_token(access_token, access_token_secret)
+api = tweepy.API(auth)
 
 # Define the function to search for tweets and send a Slack message
 def search_tweets_and_send_slack_message():
@@ -60,6 +63,12 @@ def search_tweets_and_send_slack_message():
 
 # Run the search function every 15 minutes
 while True:
+    try:
+        api.verify_credentials()
+        print("Authentication OK")
+    except Exception as e:
+        print("Error during authentication")
+        print(e)
     search_tweets_and_send_slack_message()
     time.sleep(900)
-    print("The bot is on snooze")
+
