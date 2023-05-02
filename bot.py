@@ -37,21 +37,22 @@ def search_tweets_and_send_slack_message():
         # Print the text of the tweet and the URL to the tweet
         tweet_text = tweet.text
         tweet_url = f"https://twitter.com/{tweet.user.screen_name}/status/{tweet.id}"
-        print(f"Found a tweet that mentions {search_query} at {datetime.datetime.now()}:")
-        print(tweet_text)
-        print(tweet_url)
-        if last_tweet_id is None or tweet.id > last_tweet_id:
-            last_tweet_id = tweet.id
-        # Send a Slack message
-        slack_message = {
-            "channel": slack_channel,
-            "text": f"A tweet that mentions {search_query} was found:\n{tweet_text}\n{tweet_url}"
-        }
-        response = requests.post(slack_webhook_url, data=json.dumps(slack_message), headers={"Content-Type": "application/json"})
-        if response.status_code != 200:
-            print(f"Failed to send Slack message: {response.text}")
-
+        if tweet.created_at >= datetime.datetime.now() - datetime.timedelta(minutes=15):
+            print(f"Found a tweet that mentions {search_query} at {datetime.datetime.now()}:")
+            print(tweet_text)
+            print(tweet_url)
+            if last_tweet_id is None or tweet.id > last_tweet_id:
+                last_tweet_id = tweet.id
+            # Send a Slack message
+            slack_message = {
+                "channel": slack_channel,
+                "text": f"A tweet that mentions {search_query} was found:\n{tweet_text}\n{tweet_url}"
+            }
+            response = requests.post(slack_webhook_url, data=json.dumps(slack_message), headers={"Content-Type": "application/json"})
+            if response.status_code != 200:
+                print(f"Failed to send Slack message: {response.text}")
 # Run the search function every 15 minutes
 while True:
     search_tweets_and_send_slack_message()
     time.sleep(900)
+    print("The bot is on snooze")
