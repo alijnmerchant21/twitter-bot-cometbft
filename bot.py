@@ -4,6 +4,7 @@ import config
 import datetime
 import requests
 import json
+import pytz
 
 # Twitter API credentials
 auth = tweepy.OAuthHandler(config.consumer_key, config.consumer_secret)
@@ -25,6 +26,9 @@ last_tweet_id = None
 slack_webhook_url = "https://hooks.slack.com/services/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"
 slack_channel = "#general"
 
+# Define the timezone to use for the current time
+timezone = pytz.timezone('Europe/London')
+
 # Define the function to search for tweets and send a Slack message
 def search_tweets_and_send_slack_message():
     global last_tweet_id
@@ -37,7 +41,8 @@ def search_tweets_and_send_slack_message():
         # Print the text of the tweet and the URL to the tweet
         tweet_text = tweet.text
         tweet_url = f"https://twitter.com/{tweet.user.screen_name}/status/{tweet.id}"
-        if tweet.created_at >= datetime.datetime.now() - datetime.timedelta(minutes=15):
+        tweet_created_at = tweet.created_at.replace(tzinfo=pytz.UTC).astimezone(timezone)
+        if tweet_created_at >= timezone.localize(datetime.datetime.now()) - datetime.timedelta(minutes=15):
             print(f"Found a tweet that mentions {search_query} at {datetime.datetime.now()}:")
             print(tweet_text)
             print(tweet_url)
@@ -51,6 +56,7 @@ def search_tweets_and_send_slack_message():
             response = requests.post(slack_webhook_url, data=json.dumps(slack_message), headers={"Content-Type": "application/json"})
             if response.status_code != 200:
                 print(f"Failed to send Slack message: {response.text}")
+
 # Run the search function every 15 minutes
 while True:
     search_tweets_and_send_slack_message()
