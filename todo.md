@@ -10,6 +10,8 @@
 
 - [x] Test your bot locally before deploying it to a cloud hosting service.
 
+- [X] Add support for sending message to slack.
+
 - [ ] Deploy your bot to the cloud and configure it to run continuously.
 
 - [ ] Monitor your bot for any errors or issues.
