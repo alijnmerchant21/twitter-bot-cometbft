@@ -23,7 +23,7 @@ search_query = "Tendermint"
 last_tweet_id = None
 
 # Define the Slack webhook URL and channel
-slack_webhook_url = "https://hooks.slack.com/services/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"
+slack_webhook_url = "https://hooks.slack.com/services/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"
 slack_channel = "#general"
 
 # Define the timezone to use for the current time
