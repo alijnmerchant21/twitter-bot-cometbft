@@ -14,4 +14,4 @@
 
 - [ ] Deploy your bot to the cloud and configure it to run continuously.
 
-- [ ] Monitor your bot for any errors or issues.
+- [x] Monitor your bot for any errors or issues.
