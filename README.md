@@ -9,5 +9,3 @@ To view what is left to be done, check [todo](https://github.com/alijnmerchant21
 Demo that slack message is sent.
 
 <img width="720" alt="Screenshot 2023-05-02 at 9 26 30 PM" src="https://user-images.githubusercontent.com/44069404/235779241-e2a2ee4c-4757-4b03-a833-e2f61a014f56.png">
-
-

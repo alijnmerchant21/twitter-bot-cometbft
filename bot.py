@@ -35,6 +35,7 @@ api = tweepy.API(auth)
 # Define the function to search for tweets and send a Slack message
 def search_tweets_and_send_slack_message():
     print("The bot is now activated")
+    
     global last_tweet_id
     # Search for recent tweets with the search query
     if last_tweet_id is not None:
