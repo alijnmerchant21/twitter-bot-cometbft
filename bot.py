@@ -43,6 +43,11 @@ def search_tweets_and_send_slack_message():
     else:
         tweets = api.search_tweets(q=search_query, count=100, result_type="recent")
     for tweet in tweets:
+        # Check the number of followers of the user who tweeted
+        if tweet.user.followers_count < 100:
+            print(f"Skipping tweet with ID {tweet.id} because user has less than 100 followers")
+        continue
+
         # Print the text of the tweet and the URL to the tweet
         tweet_text = tweet.text
         tweet_url = f"https://twitter.com/{tweet.user.screen_name}/status/{tweet.id}"
