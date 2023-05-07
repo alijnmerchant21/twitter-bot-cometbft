@@ -12,6 +12,12 @@
 
 - [X] Add support for sending message to slack.
 
-- [ ] Deploy your bot to the cloud and configure it to run continuously.
+- [x] Deploy your bot to the cloud and configure it to run continuously.
 
 - [x] Monitor your bot for any errors or issues.
+
+- [ ] Modify the bot to reduce influx of Slack messages
+
+  - [ ] Check number of followers. If less than 100, don't send message on slack.
+
+  - [ ] If its a retweet, don't send message on slack.
