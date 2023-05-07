@@ -52,6 +52,12 @@ def search_tweets_and_send_slack_message():
         tweet_text = tweet.text
         tweet_url = f"https://twitter.com/{tweet.user.screen_name}/status/{tweet.id}"
         tweet_created_at = tweet.created_at.replace(tzinfo=pytz.UTC).astimezone(timezone)
+
+        # Check if the tweet is a retweet
+        if tweet.retweeted:
+            print(f"Skipping retweet with ID {tweet.id}")
+        continue
+
         if tweet_created_at >= timezone.localize(datetime.datetime.now()) - datetime.timedelta(minutes=15):
             print(f"Found a tweet that mentions {search_query} at {datetime.datetime.now()}:")
             print(tweet_text)
